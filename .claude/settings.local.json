@@ -16,7 +16,8 @@
       "Bash(conda run -n unidocs alembic current)",
       "Bash(\"/c/Users/isu_mlimon3/AppData/Local/anaconda3/envs/unidocs/python.exe\" -m alembic current)",
       "Bash(\"/c/Users/isu_mlimon3/AppData/Local/anaconda3/envs/unidocs/python.exe\" -c \":*)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(\"/c/Users/isu_mlimon3/.fly/bin/fly\" logs *)"
     ]
   }
 }

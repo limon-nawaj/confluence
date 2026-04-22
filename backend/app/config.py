@@ -1,6 +1,4 @@
 from pydantic_settings import BaseSettings
-from pydantic import field_validator
-from typing import List, Union
 import json
 
 
@@ -13,22 +11,20 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    # CORS — accepts a JSON array OR a comma-separated string
-    CORS_ORIGINS: List[str] = ["http://localhost:5173"]
+    # CORS — stored as plain string to avoid pydantic-settings JSON pre-parsing.
+    # Accepts a comma-separated list or a JSON array.
+    CORS_ORIGINS: str = "http://localhost:5173"
 
     # File uploads
     UPLOAD_DIR: str = "app/uploads"
     MAX_UPLOAD_SIZE_MB: int = 25
 
-    @field_validator("CORS_ORIGINS", mode="before")
-    @classmethod
-    def parse_cors_origins(cls, v: Union[str, list]) -> list:
-        if isinstance(v, list):
-            return v
-        v = v.strip()
+    @property
+    def cors_origins_list(self) -> list:
+        v = self.CORS_ORIGINS.strip()
         if v.startswith("["):
             return json.loads(v)
-        return [origin.strip() for origin in v.split(",")]
+        return [o.strip() for o in v.split(",")]
 
     @property
     def db_url(self) -> str:
