@@ -14,6 +14,8 @@ import NewPagePage from '@/pages/NewPagePage'
 import NewSpacePage from '@/pages/NewSpacePage'
 import SearchPage from '@/pages/SearchPage'
 import TeamsPage from '@/pages/TeamsPage'
+import TicketProjectsPage from '@/pages/TicketProjectsPage'
+import TicketBoardPage from '@/pages/TicketBoardPage'
 
 function RequireAuth() {
   const { isAuthenticated } = useAuthStore()
@@ -53,6 +55,8 @@ export default function App() {
           <Route path="/spaces/:spaceKey/*" element={<PageViewPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/teams" element={<TeamsPage />} />
+          <Route path="/projects" element={<TicketProjectsPage />} />
+          <Route path="/projects/:projectId" element={<TicketBoardPage />} />
         </Route>
       </Route>
 

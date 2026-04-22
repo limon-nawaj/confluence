@@ -17,6 +17,6 @@ def search(
     limit: int = 20,
     offset: int = 0,
     db: Session = Depends(get_db),
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ) -> list[dict]:
-    return search_service.search_pages(db, q, space, limit, offset)
+    return search_service.unified_search(db, q, current_user, space, limit, offset)

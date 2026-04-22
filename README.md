@@ -1,18 +1,26 @@
-# ISUDocs — ISU Documentation Platform
+# UniDocs — Unified Documentation & Issue Tracking Platform
 
-ISUDocs is basically like Confluence, but built for schools and universities. It helps departments and research labs keep their notes and documents organized in one place, making it super easy to share knowledge and work together.
+UniDocs is a modern, unified platform designed for universities, research labs, and engineering teams. It brings together the knowledge-sharing capabilities of a Confluence-like wiki with the issue-tracking efficiency of a Jira-style Kanban board. Keep your technical specifications and your sprint tasks tightly coupled in a single, seamlessly integrated application.
 
 ---
 
 ## ✨ Key Features
 
+### Knowledge Base (Wiki)
 - **Organized Spaces**: Group your pages into folders (Spaces) so everything is easy to find.
-- **Easy Editing**: Write and format your documents effortlessly, just like in your favorite word processor. You can add tables, lists, and highlighting.
-- **Rewind Mistakes**: Every time you update a page, we keep a safe copy. If you mess up, you can easily see what changed and bring back an older version.
-- **Stay in the Loop**: Get notified right away when someone drops a comment or makes changes to your pages.
-- **Keep Your Stuff Safe**: Only the person who created a page (and the admins) can edit it, so no one else can mess with your hard work.
-- **Search Everything**: Looking for something specific? Our built-in search tool scans all your documents instantly.
-- **File Uploads**: Drop images and files directly into your pages.
+- **Rich Collaborative Editing**: Write and format your documents effortlessly using a modern text editor (tables, lists, highlighting, etc).
+- **Version History & Reversions**: Every time you update a page, a snapshot is saved. Easily compare diffs and roll back to an older version.
+- **Real-Time Notifications**: Get in-app alerts when someone drops a comment or modifies pages you follow.
+
+### Issue Tracking (Kanban)
+- **Project Workspaces**: Create dedicated boards with custom prefix keys (e.g. `ENG`, `MOB`).
+- **Drag-and-Drop Kanban Boards**: Visually track tasks through customizable status columns. 
+- **Ticket Keys**: Issues automatically inherit project-based IDs (e.g. `ENG-14`) mapped directly to URL routes (`/projects/ENG`).
+- **Ticket Assignments**: Assign users to tickets, track reporters, set priorities, and link issues back to your knowledge base.
+
+### Universal Search & Security
+- **Cross-Domain FTS Search**: Supercharged SQLite Full-Text Search securely scans your Confluence Pages, Ticket Projects, and individual Tickets from a global autocomplete UI.
+- **Strict Data Privacy**: State-of-the-art RBAC (Role-Based Access Control) operates deep in the database layer. Search explicitly strips sensitive data strings and filters out Workspaces, Projects, and Teams the active user does not have assigned mathematical permissions to see.
 
 ---
 
@@ -29,6 +37,7 @@ ISUDocs is basically like Confluence, but built for schools and universities. It
 - **Framework**: FastAPI (Python 3.11+)
 - **ORM / Database**: SQLAlchemy / SQLite (Supports seamless plug-and-play migration to Oracle Database)
 - **Authentication**: JWT-based with role-based access control (RBAC) via Passlib and Python-JOSE
+- **Architecture**: Modular routing and dedicated service layers shielding logic from endpoint decorators.
 
 ---
 
@@ -40,7 +49,7 @@ ISUDocs is basically like Confluence, but built for schools and universities. It
 
 ### Day-to-Day Execution
 
-UniDocs includes wrapper scripts to rapidly start the platform:
+UniDocs includes wrapper scripts to rapidly start the platform locally for development.
 
 **Windows (The Quick Way):**
 Double-click the **`start_dev.bat`** file in your project root, or execute `.\start_dev.bat` in your terminal to automatically open both the frontend and backend servers.
@@ -103,7 +112,7 @@ The application will launch at: `http://localhost:5173`
 
 | Role   | Permissions |
 |--------|-------------|
-| **Admin** | Everything — manage users, spaces, templates, and all content organization-wide. |
+| **Admin** | Everything — manage users, spaces, templates, projects and all content organization-wide. |
 | **Editor** | Create spaces, create/edit pages, manage templates. Subject to content ownership rules. |
 | **Viewer** | Read-only access to public spaces and individual pages. Cannot modify environments. |
 
@@ -114,7 +123,7 @@ The application will launch at: `http://localhost:5173`
 UPDATE users SET role = 'admin' WHERE email = 'your@email.com';
 ```
 
-Or via the Python shell:
+Or via the Python shell inside `backend/`:
 ```python
 from app.database import SessionLocal
 from app.models.user import User, UserRole
@@ -127,9 +136,15 @@ db.commit()
 
 ---
 
+## ☁️ Deployment
+
+The project contains a pre-built standard `.Procfile` and `Dockerfile` configuration designed to seamlessly deploy using standard CI/CD frameworks like Heroku, Render, or Fly.io. A generic `fly.toml` manifest footprint is included in the project root file.
+
+---
+
 ## 🗄 Oracle Migration
 
-By default, the platform boots with SQLite. When you are ready to scale locally or push to an enterprise environment using Oracle Database:
+By default, the platform boots with SQLite for rapid portable iteration. When you are ready to scale locally or push to an enterprise environment using Oracle Database:
 
 1. In `backend/.env`, modify the connection string:
    ```env
@@ -143,19 +158,19 @@ By default, the platform boots with SQLite. When you are ready to scale locally 
    ```
 4. Run `pip install -r requirements.txt` and restart your Uvicorn server.
 
-*All application models, Pydantic schemas, routing schemas, and business logic require zero additional changes.*
+*All application models, Pydantic schemas, routing schemas, and security business logic require zero additional layer refactoring.*
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-confluence/
+unidocs/
 ├── backend/
 │   ├── alembic.ini               Database migration configuration
 │   ├── requirements.txt          Python dependency tree
 │   └── app/
-│       ├── api/v1/               FastAPI modular routers (auth, spaces, pages, versions)
+│       ├── api/v1/               FastAPI modular routers (auth, spaces, pages, teams, tickets)
 │       ├── core/                 JWT security, startup dependencies, and custom exceptions
 │       ├── models/               SQLAlchemy ORM definitions
 │       ├── schemas/              Pydantic strictly-typed models
@@ -168,9 +183,9 @@ confluence/
     ├── vite.config.ts            Build system specs
     └── src/
         ├── api/                  Typed Axios endpoints and interactors
-        ├── components/           Modals, navigation layouts, UI atoms, Tiptap editor
+        ├── components/           Modals, navigation layouts, UI atoms, Kanban board, Tiptap editor
         ├── hooks/                TanStack Query data hooks (`useQuery`, `useMutation`)
-        ├── pages/                Route-level view components (Dashboard, Spaces, History)
+        ├── pages/                Route-level view components (Dashboard, Projects, History)
         └── store/                Zustand slices for JWT Auth and Local UI state
 ```
 
@@ -185,9 +200,12 @@ Full interactive Swagger documentation: `http://localhost:8000/api/docs`
 | Authentication | `/api/v1/auth` |
 | Users | `/api/v1/users` |
 | Workspaces | `/api/v1/spaces` |
+| Teams | `/api/v1/teams` |
 | Pages & Content | `/api/v1/pages` |
 | Revision History| `/api/v1/versions` |
 | Comments | `/api/v1/comments` |
 | File Attachments| `/api/v1/attachments` |
-| General Search | `/api/v1/search?q=` |
+| Universal Search| `/api/v1/search?q=` |
 | Templates | `/api/v1/templates` |
+| Ticket Projects | `/api/v1/ticket-projects` |
+| Tickets | `/api/v1/tickets` |

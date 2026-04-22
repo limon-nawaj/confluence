@@ -112,5 +112,220 @@ body {
 
 @keyframes slideDown {
   from { opacity: 0; height: 0; }
-  to   { opacity: 1; height: auto; }
 }
+
+/* ── Ticketing System ───────────────────────────── */
+
+/* Project Page */
+.ticket-projects-page { @apply max-w-7xl mx-auto p-6 md:p-10; }
+.ticket-projects-page__header { @apply flex items-center justify-between mb-8; }
+.ticket-projects-page__title { @apply text-3xl font-extrabold text-gray-900 tracking-tight; }
+.ticket-projects-page__subtitle { @apply text-gray-500 mt-1 text-sm md:text-base; }
+.ticket-projects-page__search-wrap { @apply mb-6; }
+.ticket-projects-page__search { @apply w-full max-w-md px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all; }
+.ticket-projects-grid { @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6; }
+
+.project-card {
+  @apply bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-indigo-200 cursor-pointer transition-all duration-200 block outline-none focus-visible:ring-2 focus-visible:ring-indigo-500;
+}
+.project-card__header { @apply flex items-center justify-between mb-4; }
+.project-card__icon { @apply w-12 h-12 rounded-xl flex items-center justify-center; }
+.project-card__key-badge { @apply px-2.5 py-1 rounded-md text-sm font-bold; }
+.project-card__name { @apply text-lg font-bold text-gray-900 mb-1; }
+.project-card__desc { @apply text-sm text-gray-500 line-clamp-2; }
+.project-card__footer { @apply mt-5 flex items-center justify-between pt-4 border-t border-gray-100; }
+.project-card__stat { @apply text-xs flex items-center gap-1 text-gray-600; }
+.project-card__date { @apply text-xs text-gray-400; }
+
+.ticket-projects-page__empty { @apply text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm; }
+.ticket-projects-page__empty-icon { @apply text-5xl mb-4; }
+.ticket-projects-page__empty h3 { @apply text-xl font-bold text-gray-900 mb-1; }
+.ticket-projects-page__empty p { @apply text-gray-500 mb-6; }
+
+/* Modals */
+.modal-overlay { @apply fixed inset-0 z-50 flex items-center justify-center bg-gray-900/40 backdrop-blur-sm p-4 overflow-y-auto; }
+.modal-panel { @apply bg-white w-full max-w-md rounded-2xl shadow-xl flex flex-col my-auto border border-gray-100; }
+.modal-panel--wide { @apply max-w-2xl; }
+.modal-panel__header { @apply px-6 py-4 border-b border-gray-100 flex items-center justify-between; }
+.modal-panel__header-left { @apply flex items-center gap-3; }
+.modal-panel__title { @apply text-lg font-bold text-gray-900; }
+.modal-panel__close { @apply text-gray-400 hover:text-gray-600 bg-gray-50 hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center transition-colors; }
+.modal-panel__body { @apply p-6 flex flex-col gap-5 max-h-[80vh] overflow-y-auto; }
+.modal-panel__footer { @apply px-6 py-4 border-t border-gray-100 flex justify-end gap-3 bg-gray-50 rounded-b-2xl; }
+
+.create-project__icon-preview { @apply mx-auto w-20 h-20 rounded-2xl flex items-center justify-center mb-2 shadow-sm; }
+.create-project__field { @apply flex flex-col gap-1.5; }
+.create-project__label { @apply text-sm font-semibold text-gray-700; }
+.create-project__emoji-picker { @apply flex flex-wrap gap-2; }
+.create-project__emoji-btn { @apply w-10 h-10 text-xl flex items-center justify-center bg-gray-50 border border-gray-200 rounded-xl hover:bg-gray-100 hover:border-gray-300 transition-colors; }
+.create-project__emoji-btn.active { @apply border-indigo-500 bg-indigo-50 ring-2 ring-indigo-500/20; }
+.create-project__color-picker { @apply flex flex-wrap gap-2; }
+.create-project__color-btn { @apply w-8 h-8 rounded-full border-2 border-white ring-1 ring-gray-200 hover:ring-gray-400 transition-all; }
+.create-project__color-btn.active { @apply ring-indigo-500 ring-2 scale-110; }
+.create-project__input { @apply w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow; }
+.create-project__input--mono { @apply font-mono font-medium; }
+.create-project__textarea { @apply w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none; }
+.create-project__hint { @apply text-xs text-gray-500; }
+.create-project__error { @apply text-sm text-red-500 bg-red-50 p-3 rounded-lg border border-red-100; }
+
+.create-ticket__row { @apply flex gap-4; }
+.create-ticket__field { @apply flex flex-col gap-1.5; }
+.create-ticket__field--half { @apply flex-1; }
+.create-ticket__label { @apply text-sm font-medium text-gray-700; }
+.create-ticket__title-input { @apply w-full text-xl font-bold px-3 py-2 border-b-2 border-transparent hover:border-gray-200 focus:border-indigo-500 focus:outline-none bg-transparent transition-colors placeholder-gray-300; }
+.create-ticket__toggle-group { @apply flex flex-wrap gap-2; }
+.create-ticket__toggle { @apply flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-sm text-gray-700 hover:bg-gray-50 transition-colors; }
+.create-ticket__toggle.active { @apply border-indigo-500 bg-indigo-50 text-indigo-700 ring-1 ring-indigo-500 font-medium; }
+.create-ticket__textarea { @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow text-sm; }
+.create-ticket__input { @apply w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 transition-shadow text-sm; }
+.create-ticket__select { @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm; }
+.create-ticket__tag-list { @apply flex flex-wrap gap-2; }
+.create-ticket__tag { @apply px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium border border-transparent hover:bg-gray-200 transition-colors; }
+.create-ticket__tag.active { @apply bg-indigo-100 text-indigo-800 border-indigo-200; }
+
+/* Buttons */
+.btn { @apply px-4 py-2 font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2; }
+.btn--primary { @apply bg-indigo-600 text-white border border-transparent hover:bg-indigo-700 focus:ring-indigo-500 shadow-sm; }
+.btn--ghost { @apply bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-transparent; }
+.btn--ghost-active { @apply bg-indigo-50 text-indigo-700 border border-indigo-200; }
+.btn--sm { @apply px-3 py-1.5 text-sm; }
+.btn--xs { @apply px-2 py-1 text-xs rounded-md; }
+.link-btn { @apply text-indigo-600 hover:text-indigo-800 hover:underline font-medium; }
+
+/* Board Page */
+.board-page { @apply flex flex-col h-full bg-[#f9fafb]; }
+.board-page__header { @apply flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 md:px-8 border-b border-gray-200 bg-white shadow-sm z-10; }
+.board-page__breadcrumb { @apply flex items-center gap-2; }
+.board-page__back { @apply text-sm text-gray-500 hover:text-gray-900 font-medium; }
+.board-page__sep { @apply text-gray-300; }
+.board-page__project-icon { @apply text-xl; }
+.board-page__title { @apply text-xl font-bold text-gray-900 tracking-tight; }
+.board-page__key-badge { @apply px-2 py-0.5 rounded text-xs font-bold; }
+.board-page__header-actions { @apply flex items-center gap-4; }
+.board-page__tabs { @apply flex bg-gray-100 p-1 rounded-lg border border-gray-200; }
+.board-page__tab { @apply px-3 py-1.5 text-sm font-medium text-gray-600 rounded-md transition-all; }
+.board-page__tab:hover { @apply text-gray-900; }
+.board-page__tab.active { @apply bg-white text-gray-900 shadow-sm; }
+.board-page__loading { @apply flex flex-col items-center justify-center flex-1 text-gray-500 gap-3 mt-20; }
+.board-page__error { @apply p-10 text-center text-red-500; }
+
+.board-page__sprint-banner { @apply flex items-center justify-between px-8 py-3 bg-indigo-50 border-b border-indigo-100 text-sm; }
+.sprint-banner__content { @apply flex items-center gap-2; }
+.sprint-banner__icon { @apply text-indigo-500; }
+.sprint-banner__name { @apply font-bold text-indigo-900; }
+.sprint-banner__goal { @apply text-indigo-700/80; }
+.sprint-banner__dates { @apply text-indigo-600 font-medium; }
+
+.board-page__filters { @apply flex flex-wrap items-center gap-3 px-5 md:px-8 py-4 border-b border-gray-200 bg-white; }
+.board-page__filter-search { @apply w-60 px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500; }
+.board-page__filter-select { @apply px-3 py-1.5 text-sm border border-gray-300 rounded-lg text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer bg-white; }
+
+/* Kanban Board */
+.kanban-board { @apply flex flex-1 overflow-x-auto overflow-y-hidden p-5 md:px-8 gap-5 items-start scroll-smooth; }
+.kanban-column { @apply flex flex-col flex-1 min-w-[150px] max-w-sm h-full bg-[#f4f5f7] rounded-xl border border-gray-200 shrink; }
+.kanban-column__header { @apply flex items-center justify-between p-3 border-b border-gray-200/60 sticky top-0 bg-[#f4f5f7] rounded-t-xl z-10; }
+.kanban-column__title-row { @apply flex items-center gap-2; }
+.kanban-column__icon { @apply opacity-80 text-sm; }
+.kanban-column__title { @apply text-sm font-bold text-gray-700 uppercase tracking-wide; }
+.kanban-column__count { @apply w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold transition-all; }
+.kanban-column__add-btn { @apply w-6 h-6 flex items-center justify-center rounded text-gray-400 hover:text-gray-700 hover:bg-gray-200 transition-colors font-medium; }
+.kanban-column__cards { @apply flex-1 overflow-y-auto p-2.5 flex flex-col gap-2.5 min-h-[150px]; }
+.kanban-column__cards--over { @apply bg-gray-200/50 rounded-lg; }
+.kanban-column__empty { @apply p-4 text-center text-sm text-gray-400 border-2 border-dashed border-gray-300 rounded-lg m-2; }
+
+/* Kanban Card */
+.kanban-card { @apply bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:border-indigo-300 hover:shadow-md cursor-grab transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 text-left; }
+.kanban-card:active { @apply cursor-grabbing; }
+.kanban-card--dragging { @apply shadow-xl rotate-[2deg] z-50 border-indigo-400; }
+.kanban-card__header { @apply flex items-center gap-1.5 mb-1.5; }
+.kanban-card__type-icon { @apply text-xs flex-shrink-0; }
+.kanban-card__key { @apply text-[11px] font-bold text-gray-500 uppercase tracking-wider; }
+.kanban-card__spacer { @apply flex-1; }
+.kanban-card__priority-dot { @apply w-2 h-2 rounded-full; }
+.kanban-card__title { @apply text-sm font-medium text-gray-800 leading-snug mb-2.5 break-words; }
+.kanban-card__labels { @apply flex flex-wrap gap-1 mb-2.5; }
+.kanban-card__label { @apply px-1.5 py-0.5 text-[10px] font-bold rounded; }
+.kanban-card__footer { @apply flex items-center justify-between mt-auto; }
+.kanban-card__footer-left { @apply flex items-center gap-2; }
+.kanban-card__due { @apply text-[11px] font-medium px-1.5 py-0.5 bg-gray-50 rounded border border-gray-100; }
+.kanban-card__subtasks { @apply text-[11px] text-gray-400 font-medium; }
+.kanban-card__assignees { @apply flex items-center -space-x-1.5; }
+.kanban-card__avatar { @apply w-5 h-5 rounded-full border border-white flex items-center justify-center text-[9px] font-bold text-white shadow-sm shadow-black/10; }
+
+/* Ticket List View */
+.ticket-list-view { @apply flex-1 overflow-auto p-5 md:px-8 bg-white text-sm; }
+.ticket-table { @apply w-full text-left border-collapse border border-gray-200 rounded-lg overflow-hidden whitespace-nowrap; }
+.ticket-table thead { @apply bg-gray-50 text-gray-600 text-xs uppercase tracking-wider border-b border-gray-200; }
+.ticket-table th { @apply px-4 py-3 font-semibold; }
+.ticket-table__row { @apply border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors; }
+.ticket-table td { @apply px-4 py-3; }
+.ticket-table__key { @apply text-gray-500 font-mono text-xs; }
+.ticket-table__title { @apply font-medium text-gray-900 w-full max-w-sm truncate whitespace-nowrap; }
+.status-badge { @apply px-2 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider inline-block; }
+.ticket-table__assignees { @apply flex -space-x-1; }
+.ticket-table__avatar { @apply w-6 h-6 rounded-full bg-gray-200 border border-white flex items-center justify-center text-[10px] font-bold text-gray-600; }
+.ticket-table__due { @apply text-gray-500 tabular-nums; }
+.ticket-list-view__empty { @apply p-10 text-center text-gray-500 border border-gray-200 border-t-0 rounded-b-lg bg-gray-50/50; }
+
+/* Ticket Detail Modal */
+.ticket-detail-panel { @apply bg-white w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex flex-col border border-gray-200 my-auto overflow-hidden; }
+.ticket-detail-panel__loading { @apply flex items-center justify-center h-full text-gray-400; }
+.ticket-detail-panel__header { @apply flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 shrink-0; }
+.ticket-detail-panel__meta { @apply flex items-center gap-2; }
+.ticket-detail-panel__type-icon { @apply text-xl; }
+.ticket-detail-panel__key { @apply text-sm font-bold text-gray-500 uppercase tracking-widest; }
+.ticket-detail-panel__actions { @apply flex items-center gap-3; }
+.ticket-detail-panel__body { @apply flex flex-col md:flex-row flex-1 overflow-hidden; }
+.ticket-detail-panel__main { @apply flex-1 overflow-y-auto p-6 lg:p-8 flex flex-col gap-8; }
+.ticket-detail-panel__sidebar { @apply w-full md:w-[320px] bg-gray-50 border-l border-gray-200 p-6 overflow-y-auto flex flex-col gap-6 shrink-0; }
+
+.ticket-detail-panel__title { @apply text-2xl lg:text-3xl font-bold text-gray-900 leading-tight cursor-pointer hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors relative; }
+.ticket-detail-panel__title-edit-hint { @apply opacity-0 absolute right-4 top-1/2 -translate-y-1/2 text-lg transition-opacity; }
+.ticket-detail-panel__title:hover .ticket-detail-panel__title-edit-hint { @apply opacity-100; }
+.ticket-detail-panel__title-input { @apply text-2xl lg:text-3xl font-bold text-gray-900 w-full bg-white border border-indigo-300 ring-2 ring-indigo-500/20 rounded-lg p-2 focus:outline-none; }
+
+.ticket-detail-panel__section { @apply flex flex-col gap-3; }
+.ticket-detail-panel__section-title { @apply text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2; }
+.ticket-detail-panel__description { @apply text-gray-700 text-sm leading-relaxed max-w-none whitespace-pre-wrap; }
+.ticket-detail-panel__empty { @apply text-gray-400 italic text-sm; }
+.badge { @apply bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full text-xs; }
+
+.ticket-sidebar__field { @apply flex flex-col gap-1.5; }
+.ticket-sidebar__label { @apply text-xs font-bold text-gray-500 uppercase tracking-wider; }
+.ticket-sidebar__value { @apply text-sm font-medium text-gray-800 flex items-center gap-2; }
+.ticket-sidebar__value--muted { @apply text-gray-500 font-normal; }
+.ticket-sidebar__select { @apply w-full bg-white border border-gray-200 rounded-md px-2.5 py-1.5 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none hover:border-gray-300 hover:shadow-sm cursor-pointer transition-all; }
+.ticket-sidebar__user { @apply flex items-center gap-2 text-sm font-medium text-gray-700; }
+.ticket-sidebar__avatar { @apply w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm; }
+.ticket-sidebar__empty { @apply text-sm text-gray-400 italic; }
+.ticket-sidebar__assignees { @apply flex flex-col gap-2; }
+.ticket-sidebar__labels { @apply flex flex-wrap gap-1.5; }
+.ticket-sidebar__watcher-avatars { @apply flex flex-wrap gap-1; }
+.ticket-sidebar__link { @apply flex items-center justify-between text-sm py-1 border-b border-gray-200/50 last:border-0; }
+.ticket-sidebar__link-type { @apply text-gray-500 capitalize; }
+.ticket-sidebar__link-key { @apply font-mono text-gray-900; }
+
+.ticket-comments { @apply flex flex-col gap-5 mb-4; }
+.ticket-comment { @apply flex gap-3; }
+.ticket-comment__avatar { @apply w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0 mt-1; }
+.ticket-comment__body { @apply flex-1 flex flex-col gap-1; }
+.ticket-comment__header { @apply flex items-center gap-2; }
+.ticket-comment__author { @apply font-bold text-gray-900 text-sm; }
+.ticket-comment__time { @apply text-xs text-gray-500; }
+.ticket-comment__content { @apply text-sm text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100 leading-relaxed; }
+
+.ticket-comments__add { @apply flex gap-3 items-start mt-2; }
+.ticket-comments__input-wrap { @apply flex-1 flex flex-col gap-2 bg-white rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500 transition-shadow p-0.5; }
+.ticket-comments__input { @apply w-full bg-transparent border-0 resize-none px-3 py-2 text-sm focus:outline-none placeholder-gray-400; }
+.ticket-comments__submit-row { @apply flex justify-end px-2 pb-2; }
+
+/* Loading Spinner Utils */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(99, 102, 241, 0.2);
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }

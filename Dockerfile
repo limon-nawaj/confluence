@@ -23,10 +23,10 @@ COPY backend/ .
 # Copy built React app into backend/app/static so FastAPI can serve it
 COPY --from=frontend-build /app/frontend/dist ./app/static
 
-# Persistent storage for the SQLite database and uploads should be
-# provided via a Docker volume mounted at /app/app/data in production.
-# The database path and upload dir can be overridden with env vars.
+# Heroku dynamically assigns PORT; default to 8501 for non-Heroku (ShinyProxy)
+ENV PORT=8080
 
-EXPOSE 8501
+EXPOSE $PORT
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8501", "--timeout-keep-alive", "0"]
+# Run migrations then start the server
+CMD alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT --timeout-keep-alive 0

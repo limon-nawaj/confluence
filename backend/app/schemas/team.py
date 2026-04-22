@@ -29,13 +29,15 @@ class TeamMemberResponse(TeamMemberBase):
 
     model_config = {"from_attributes": True}
 
-class TeamResponse(TeamBase):
+class TeamMiniResponse(TeamBase):
     id: int
     owner_id: int
     created_at: datetime
-    members: List[TeamMemberResponse] = []
 
     model_config = {"from_attributes": True}
+
+class TeamResponse(TeamMiniResponse):
+    members: List[TeamMemberResponse] = []
 
 
 class SpaceTeamAccessBase(BaseModel):
@@ -49,6 +51,6 @@ class SpaceTeamAccessResponse(SpaceTeamAccessBase):
     space_id: int
     team_id: int
     created_at: datetime
-    team: TeamResponse
+    team: TeamMiniResponse
 
     model_config = {"from_attributes": True}

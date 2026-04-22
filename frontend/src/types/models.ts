@@ -96,11 +96,12 @@ export interface Template {
 }
 
 export interface SearchResult {
+  type?: 'page' | 'project' | 'ticket'
   page_id: number
   title: string
   space_id: number
   space_key: string
-  snippet: string
+  snippet?: string
 }
 
 export interface TokenResponse {
@@ -139,12 +140,15 @@ export interface TeamMember {
   user: User
 }
 
-export interface Team {
+export interface TeamMini {
   id: number
   name: string
   description?: string
   owner_id: number
   created_at: string
+}
+
+export interface Team extends TeamMini {
   members: TeamMember[]
 }
 
@@ -154,5 +158,115 @@ export interface SpaceTeamAccess {
   team_id: number
   permission: string
   created_at: string
-  team: Team
+  team: TeamMini
+}
+
+// ─── Ticketing System ────────────────────────────────────────────────────────
+
+export type TicketType = 'bug' | 'feature' | 'task' | 'improvement' | 'epic'
+export type TicketStatus = 'backlog' | 'todo' | 'in_progress' | 'in_review' | 'done' | 'cancelled'
+export type TicketPriority = 'critical' | 'high' | 'medium' | 'low'
+export type LinkType = 'blocks' | 'blocked_by' | 'relates_to' | 'duplicates' | 'duplicated_by' | 'clones'
+export type SprintStatus = 'planning' | 'active' | 'completed'
+export type ProjectRole = 'member' | 'admin'
+
+export interface TicketProject {
+  id: number
+  name: string
+  key: string
+  description?: string
+  owner_id: number
+  owner?: UserMini
+  team_id?: number
+  icon_color: string
+  icon_emoji: string
+  ticket_counter: number
+  created_at: string
+  updated_at: string
+  open_ticket_count?: number
+}
+
+export interface ProjectPermission {
+  id: number
+  project_id: number
+  user_id: number
+  role: ProjectRole
+  user: UserMini
+  created_at: string
+  updated_at: string
+}
+
+export interface TicketLabel {
+  id: number
+  project_id: number
+  name: string
+  color: string
+  created_at?: string
+}
+
+export interface UserMini {
+  id: number
+  username: string
+  full_name?: string
+}
+
+export interface Ticket {
+  id: number
+  project_id: number
+  ticket_key: string
+  title: string
+  description?: string
+  type: TicketType
+  status: TicketStatus
+  priority: TicketPriority
+  story_points?: number
+  due_date?: string
+  parent_id?: number
+  created_by: number
+  creator?: UserMini
+  assignees: UserMini[]
+  labels: TicketLabel[]
+  sprint_ids: number[]
+  children_count: number
+  created_at: string
+  updated_at: string
+}
+
+export interface TicketComment {
+  id: number
+  ticket_id: number
+  author_id: number
+  author: UserMini
+  parent_id?: number
+  content: string
+  created_at: string
+  updated_at: string
+  replies: TicketComment[]
+}
+
+export interface TicketLink {
+  id: number
+  source_ticket_id: number
+  target_ticket_id: number
+  link_type: LinkType
+  created_at: string
+}
+
+export interface TicketDetail extends Ticket {
+  comments: TicketComment[]
+  links_as_source: TicketLink[]
+  links_as_target: TicketLink[]
+  watchers: UserMini[]
+}
+
+export interface Sprint {
+  id: number
+  project_id: number
+  name: string
+  goal?: string
+  status: SprintStatus
+  start_date?: string
+  end_date?: string
+  created_at: string
+  updated_at: string
 }

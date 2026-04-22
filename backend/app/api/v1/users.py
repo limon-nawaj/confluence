@@ -9,6 +9,24 @@ from app.services import user_service
 router = APIRouter()
 
 
+@router.get("/search", response_model=list[UserResponse])
+def search_users(
+    q: str,
+    limit: int = 10,
+    db: Session = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
+    from sqlalchemy import or_
+    search_term = f"%{q}%"
+    users = db.query(User).filter(
+        User.is_active == True,
+        or_(
+            User.username.ilike(search_term),
+            User.full_name.ilike(search_term)
+        )
+    ).limit(limit).all()
+    return users
+
 @router.get("", response_model=list[UserResponse], dependencies=[Depends(require_admin)])
 def list_users(skip: int = 0, limit: int = 50, db: Session = Depends(get_db)) -> list[User]:
     return user_service.get_users(db, skip, limit)

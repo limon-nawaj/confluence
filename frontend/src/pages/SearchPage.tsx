@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { Search, FileText } from 'lucide-react'
+import { Search, FileText, FolderKanban, Ticket } from 'lucide-react'
 import { useSearch } from '@/hooks/useSearch'
 import { slugifyTitle } from '@/utils/pageSlug'
 
@@ -37,11 +37,23 @@ export default function SearchPage() {
         {results.map((r) => (
           <button
             key={r.page_id}
-            onClick={() => navigate(`/spaces/${r.space_key}/${r.page_id}-${slugifyTitle(r.title)}`)}
+            onClick={() => {
+              if (r.type === 'project' || r.type === 'ticket') {
+                navigate(`/projects/${r.space_key}`)
+              } else {
+                navigate(`/spaces/${r.space_key}/${r.page_id}-${slugifyTitle(r.title)}`)
+              }
+            }}
             className="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-blue-200 hover:shadow-sm transition-all bg-white"
           >
             <div className="flex items-center gap-2 mb-1">
-              <FileText size={14} className="text-blue-500 flex-shrink-0" />
+              {r.type === 'project' ? (
+                <FolderKanban size={14} className="text-purple-500 flex-shrink-0" />
+              ) : r.type === 'ticket' ? (
+                <Ticket size={14} className="text-orange-500 flex-shrink-0" />
+              ) : (
+                <FileText size={14} className="text-blue-500 flex-shrink-0" />
+              )}
               <span className="font-medium text-gray-900 text-sm">{r.title}</span>
             </div>
             {r.snippet && (

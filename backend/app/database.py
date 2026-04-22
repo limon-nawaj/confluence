@@ -6,11 +6,11 @@ from app.models.base import Base
 # SQLite requires check_same_thread=False for multi-threaded use.
 # This argument is ignored by Oracle/PostgreSQL drivers.
 connect_args = {}
-if settings.DATABASE_URL.startswith("sqlite"):
+if settings.db_url.startswith("sqlite"):
     connect_args["check_same_thread"] = False
 
 engine = create_engine(
-    settings.DATABASE_URL,
+    settings.db_url,
     connect_args=connect_args,
     pool_pre_ping=True,  # recycles stale connections — important for Oracle
 )

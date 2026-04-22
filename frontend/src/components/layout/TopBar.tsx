@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Search, LogOut, User, Settings, ChevronDown, Bell, CheckCheck, FileText } from 'lucide-react'
+import { Search, LogOut, User, Settings, ChevronDown, Bell, CheckCheck, FileText, Ticket, FolderKanban } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { notificationsApi } from '@/api/notifications'
 import { searchApi } from '@/api/search'
-import type { Notification, SearchResult } from '@/types/models'
+import { getTicketProjects } from '@/api/ticketProjects'
+import type { Notification, SearchResult, TicketProject } from '@/types/models'
 import { slugifyTitle } from '@/utils/pageSlug'
 
 function timeAgo(dateStr: string): string {
@@ -30,7 +31,15 @@ export function TopBar() {
   const menuRef = useRef<HTMLDivElement>(null)
   const bellRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLDivElement>(null)
+  const projDropRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const [projMenuOpen, setProjMenuOpen] = useState(false)
+  const { data: ticketProjects = [] } = useQuery<TicketProject[]>({
+    queryKey: ['ticket-projects'],
+    queryFn: getTicketProjects,
+    staleTime: 60000,
+  })
 
   const { data: suggestions = [] } = useQuery<SearchResult[]>({
     queryKey: ['search-suggestions', q],
@@ -64,6 +73,7 @@ export function TopBar() {
     function onClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false)
       if (bellRef.current && !bellRef.current.contains(e.target as Node)) setBellOpen(false)
+      if (projDropRef.current && !projDropRef.current.contains(e.target as Node)) setProjMenuOpen(false)
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setSearchFocused(false)
         setSelectedSuggestion(-1)
@@ -97,7 +107,11 @@ export function TopBar() {
   }
 
   const handleSuggestionClick = (result: SearchResult) => {
-    navigate(`/spaces/${result.space_key}/${result.page_id}-${slugifyTitle(result.title)}`)
+    if (result.type === 'project' || result.type === 'ticket') {
+      navigate(`/projects/${result.space_key}`)
+    } else {
+      navigate(`/spaces/${result.space_key}/${result.page_id}-${slugifyTitle(result.title)}`)
+    }
     setQ('')
     setSearchFocused(false)
     setSelectedSuggestion(-1)
@@ -162,6 +176,46 @@ export function TopBar() {
         <button onClick={() => navigate('/teams')} className="px-3 py-1.5 text-sm font-medium text-white/60 hover:text-white hover:bg-white/5 rounded-md transition-all">
           Teams
         </button>
+        <div className="relative" ref={projDropRef}>
+          <button
+            onClick={() => setProjMenuOpen(!projMenuOpen)}
+            className={`px-3 py-1.5 text-sm font-medium flex items-center gap-1 rounded-md transition-all ${projMenuOpen ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+          >
+            🎫 Projects <ChevronDown size={14} className={`transition-transform ${projMenuOpen ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {projMenuOpen && (
+            <div className="absolute top-full left-0 mt-1 w-64 rounded-xl shadow-2xl z-50 overflow-hidden py-1 border border-white/10" style={{ background: '#1e2130' }}>
+              <div className="px-3 py-2 text-xs font-semibold text-white/40 uppercase tracking-widest border-b border-white/5 mb-1">
+                Recent Projects
+              </div>
+              {ticketProjects.length === 0 ? (
+                <div className="px-4 py-3 text-sm text-white/50 italic">No projects available</div>
+              ) : (
+                <div className="max-h-64 overflow-y-auto">
+                  {ticketProjects.slice(0, 5).map(proj => (
+                    <button
+                      key={proj.id}
+                      onClick={() => { navigate(`/projects/${proj.key}`); setProjMenuOpen(false); }}
+                      className="w-full text-left px-4 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white flex items-center gap-2"
+                    >
+                      <span>{proj.icon_emoji}</span>
+                      <span className="truncate">{proj.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="border-t border-white/5 mt-1 pt-1">
+                <button
+                  onClick={() => { navigate('/projects'); setProjMenuOpen(false); }}
+                  className="w-full text-left px-4 py-2 text-sm text-indigo-400 hover:bg-white/5 hover:text-indigo-300 font-medium"
+                >
+                  View all Projects...
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </nav>
 
       <div className="h-5 w-px bg-white/10 mx-2 hidden sm:block" />
@@ -200,7 +254,13 @@ export function TopBar() {
                     idx === selectedSuggestion ? 'bg-indigo-600/20' : 'hover:bg-white/5'
                   }`}
                 >
-                  <FileText size={13} className="flex-shrink-0 text-indigo-400/70 mt-0.5" />
+                  {result.type === 'project' ? (
+                    <FolderKanban size={13} className="flex-shrink-0 text-indigo-400/70 mt-0.5" />
+                  ) : result.type === 'ticket' ? (
+                    <Ticket size={13} className="flex-shrink-0 text-indigo-400/70 mt-0.5" />
+                  ) : (
+                    <FileText size={13} className="flex-shrink-0 text-indigo-400/70 mt-0.5" />
+                  )}
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white/80 truncate font-medium">{result.title}</p>
                     {result.snippet && (
