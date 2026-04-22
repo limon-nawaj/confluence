@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -62,6 +62,8 @@ def download_attachment(
     attachment = attachment_service.get_attachment(db, attachment_id)
     if not attachment:
         raise HTTPException(status_code=404, detail="Attachment not found")
+    if attachment.is_cloud:
+        return RedirectResponse(url=attachment.storage_path)
     return FileResponse(
         path=attachment.storage_path,
         filename=attachment.original_filename,

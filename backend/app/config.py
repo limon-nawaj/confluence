@@ -19,6 +19,15 @@ class Settings(BaseSettings):
     UPLOAD_DIR: str = "app/uploads"
     MAX_UPLOAD_SIZE_MB: int = 25
 
+    # Cloudinary — optional; if set, uploads go to Cloudinary instead of local disk
+    CLOUDINARY_CLOUD_NAME: str = ""
+    CLOUDINARY_API_KEY: str = ""
+    CLOUDINARY_API_SECRET: str = ""
+
+    @property
+    def cloudinary_enabled(self) -> bool:
+        return bool(self.CLOUDINARY_CLOUD_NAME and self.CLOUDINARY_API_KEY and self.CLOUDINARY_API_SECRET)
+
     @property
     def cors_origins_list(self) -> list:
         v = self.CORS_ORIGINS.strip()

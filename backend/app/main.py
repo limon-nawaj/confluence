@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from app.api.v1.router import api_router
 from app.config import settings
 from app.database import create_tables
+from app.core.cloudinary import init_cloudinary
 
 app = FastAPI(
     title="UniDocs",
@@ -35,6 +36,8 @@ app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads"
 @app.on_event("startup")
 def on_startup() -> None:
     create_tables()
+    if settings.cloudinary_enabled:
+        init_cloudinary()
 
 
 @app.get("/api/health")
