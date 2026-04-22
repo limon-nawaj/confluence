@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { ArrowRight, FileText, Layers, Search } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
+import { UniDocsLogo } from '@/components/ui/UniDocsLogo'
 
 export default function LoginPage() {
   const { login } = useAuthStore()
@@ -48,7 +49,7 @@ export default function LoginPage() {
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <img src="/logo.png" alt="UniDocs" className="w-10 h-10 rounded-xl object-cover shadow-xl" />
+          <UniDocsLogo size={40} />
           <span className="text-xl font-bold text-white tracking-tight">UniDocs</span>
         </div>
 
@@ -90,7 +91,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="lg:hidden flex items-center gap-2 mb-8 justify-center">
-            <img src="/logo.png" alt="UniDocs" className="w-9 h-9 rounded-xl object-cover shadow-md" />
+            <UniDocsLogo size={36} />
             <span className="text-xl font-bold text-gray-900">UniDocs</span>
           </div>
 

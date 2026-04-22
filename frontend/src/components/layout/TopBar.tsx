@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { UniDocsLogo } from '@/components/ui/UniDocsLogo'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Search, LogOut, User, Settings, ChevronDown, Bell, CheckCheck, FileText, Ticket, FolderKanban } from 'lucide-react'
@@ -162,7 +163,7 @@ export function TopBar() {
     >
       {/* Logo */}
       <button onClick={() => navigate('/')} className="flex items-center gap-2 font-bold text-sm flex-shrink-0">
-        <img src="/logo.png" alt="UniDocs" className="w-7 h-7 rounded-lg object-cover shadow-lg flex-shrink-0" />
+        <UniDocsLogo size={28} />
         <span className="text-white/90 tracking-tight hidden sm:block">UniDocs</span>
       </button>
 

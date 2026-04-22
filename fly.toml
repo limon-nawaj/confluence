@@ -1,4 +1,4 @@
-app = "unidocs-app"
+app = "unidocs"
 primary_region = "ord"       # Chicago — closest to ISU
 
 [build]

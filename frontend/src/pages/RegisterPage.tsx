@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { authApi } from '@/api/auth'
 import { useAuthStore } from '@/store/authStore'
+import { UniDocsLogo } from '@/components/ui/UniDocsLogo'
 
 export default function RegisterPage() {
   const { login } = useAuthStore()
@@ -34,7 +35,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-sm bg-white rounded-xl shadow-sm border border-gray-200 p-8">
         <div className="flex items-center justify-center gap-2 mb-6">
-          <img src="/logo.png" alt="UniDocs" className="w-9 h-9 rounded-lg object-cover shadow-md" />
+          <UniDocsLogo size={36} />
           <span className="text-2xl font-bold text-gray-900">UniDocs</span>
         </div>
         <h1 className="text-lg font-semibold text-gray-800 mb-4 text-center">Create your account</h1>
