@@ -1,0 +1,35 @@
+# flyctl launch added from .gitignore
+# Python
+**\venv
+**\__pycache__
+**\*.py[cod]
+**\*.pyo
+**\*.egg-info
+**\.pytest_cache
+
+# Database
+**\*.db
+**\*.sqlite3
+
+# Environment
+**\.env
+**\*.env.local
+
+# Uploads (local file storage)
+**\backend\app\uploads\*
+!**\backend\app\uploads\.gitkeep
+
+# Node
+**\node_modules
+**\dist
+**\.vite
+
+# OS
+**\.DS_Store
+**\Thumbs.db
+
+# IDE
+**\.vscode
+**\.idea
+**\*.swp
+fly.toml
